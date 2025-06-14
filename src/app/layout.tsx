@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import './globals.css'
-import { CivicAuthProvider } from "@civic/auth/nextjs"
+// import { CivicAuthProvider } from "@civic/auth/nextjs"
+import { CivicAuthProvider } from "@civic/auth-web3/nextjs";
 
 export const metadata: Metadata = {
   title: 'WhisperrChat - Chat in whispers, secured by the blockchain',

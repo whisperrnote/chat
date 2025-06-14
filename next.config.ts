@@ -1,4 +1,4 @@
-import { createCivicAuthPlugin } from "@civic/auth/nextjs";
+import { createCivicAuthPlugin } from "@civic/auth-web3/nextjs";
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
@@ -12,11 +12,9 @@ const nextConfig: NextConfig = {
   },
 };
 
-// Only initialize Civic Auth if client ID is provided
-const withCivicAuth = process.env.NEXT_PUBLIC_CIVIC_CLIENT_ID
-  ? createCivicAuthPlugin({
-      clientId: process.env.NEXT_PUBLIC_CIVIC_CLIENT_ID
-    })
-  : (config: NextConfig) => config;
+const withCivicAuth = createCivicAuthPlugin({
+  clientId: process.env.NEXT_PUBLIC_CIVIC_CLIENT_ID || "",
+});
+
 
 export default withCivicAuth(nextConfig);

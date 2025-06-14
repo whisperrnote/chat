@@ -4,7 +4,8 @@ import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
-import { HiShieldCheck, HiGlobeAlt, HiLockClosed, HiUserGroup, HiChatAlt2, HiLightningBolt } from 'react-icons/hi'
+import { HiShieldCheck, HiGlobeAlt, HiLockClosed, HiUserGroup } from 'react-icons/hi'
+import { Navbar } from '@/components/layout/Navbar'
 
 export default function PageClient() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
@@ -70,50 +71,7 @@ export default function PageClient() {
       </div>
 
       {/* Navigation */}
-      <motion.nav 
-        initial={{ y: -20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        className="relative z-10 p-6"
-      >
-        <div className="max-w-7xl mx-auto flex justify-between items-center">
-          <motion.div 
-            className="flex items-center space-x-3"
-            whileHover={{ scale: 1.05 }}
-          >
-            <Image
-              src="/images/logo.png"
-              alt="WhisperrChat"
-              width={40}
-              height={40}
-              className="rounded-lg"
-            />
-            <span className="text-2xl font-bold text-gray-900 dark:text-white">
-              WhisperrChat
-            </span>
-          </motion.div>
-          
-          <div className="flex items-center space-x-4">
-            <Link
-              href="/app"
-              className="px-4 py-2 text-gray-700 dark:text-gray-300 hover:text-primary transition-colors"
-            >
-              Open App 📱
-            </Link>
-            <Link
-              href="/auth/login"
-              className="px-4 py-2 text-gray-700 dark:text-gray-300 hover:text-primary transition-colors"
-            >
-              Sign In
-            </Link>
-            <Link
-              href="/auth/register"
-              className="px-6 py-2 bg-primary/10 backdrop-blur-md border border-primary/20 text-primary font-semibold rounded-full hover:bg-primary/20 transition-all duration-300"
-            >
-              Get Started 🚀
-            </Link>
-          </div>
-        </div>
-      </motion.nav>
+      <Navbar />
 
       {/* Hero Section */}
       <section className="relative z-10 max-w-7xl mx-auto px-6 pt-20 pb-32">
@@ -341,6 +299,48 @@ export default function PageClient() {
           <p className="text-xl text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
             Join thousands of users who've already made the switch to truly secure messaging.
           </p>
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <Link
+              href="/app"
+              className="px-8 py-4 bg-primary text-white font-semibold rounded-2xl hover:bg-primary/90 transition-all duration-300 hover:scale-105 shadow-lg"
+            >
+              Try WhisperrChat Now 🚀
+            </Link>
+            <Link
+              href="/auth/register"
+              className="px-8 py-4 bg-white/10 backdrop-blur-md border border-white/20 text-gray-700 dark:text-gray-300 font-semibold rounded-2xl hover:bg-white/20 transition-all duration-300"
+            >
+              Create Account
+            </Link>
+          </div>
+        </motion.div>
+      </section>
+
+      {/* Footer */}
+      <footer className="relative z-10 max-w-7xl mx-auto px-6 py-12 border-t border-white/10">
+        <div className="flex flex-col md:flex-row justify-between items-center">
+          <div className="flex items-center space-x-3 mb-4 md:mb-0">
+            <Image
+              src="/images/logo.png"
+              alt="WhisperrChat"
+              width={32}
+              height={32}
+              className="rounded-lg"
+            />
+            <span className="text-lg font-semibold text-gray-900 dark:text-white">
+              WhisperrChat
+            </span>
+          </div>
+          
+          <p className="text-gray-600 dark:text-gray-400 text-center">
+            © 2024 WhisperrChat. Chat in whispers, secured by the blockchain.
+          </p>
+        </div>
+      </footer>
+    </div>
+  )
+}
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Link
