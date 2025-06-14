@@ -4,9 +4,36 @@ import { useState } from 'react'
 import AppShell from '@/components/layout/AppShell'
 import { motion } from 'framer-motion'
 import { Navbar } from '@/components/layout/Navbar'
+import { useXMTP } from '@/lib/hooks/useXMTP'
 
 export default function DashboardClient() {
-  const [selectedChat, setSelectedChat] = useState<string | null>(null)
+  const [activeView, setActiveView] = useState('chats')
+  const [selectedChat, setSelectedChat] = useState<any>(null)
+  const [isXMTPEnabled, setIsXMTPEnabled] = useState(false)
+  
+  const { client, conversations, initializeClient, sendMessage, createConversation, isLoading, error } = useXMTP()
+
+  const handleEnableXMTP = async () => {
+    try {
+      // Mock wallet connection - in real app, use actual wallet
+      const mockWalletAddress = "0x1234567890123456789012345678901234567890"
+      const mockSignMessage = async (message: string) => {
+        // In real app, use actual wallet signing
+        return "0x" + "0".repeat(130) // Mock signature
+      }
+      
+      await initializeClient(mockWalletAddress, mockSignMessage)
+      setIsXMTPEnabled(true)
+    } catch (err) {
+      console.error('Failed to enable XMTP:', err)
+    }
+  }
+
+  const handleSendXMTPMessage = async (message: string) => {
+    if (selectedChat && isXMTPEnabled) {
+      await sendMessage(selectedChat.id, message)
+    }
+  }
 
   return (
     <div className="h-screen flex flex-col">
@@ -101,3 +128,10 @@ export default function DashboardClient() {
     </div>
   )
 }
+
+// Mock data for non-XMTP mode
+const mockChats = [
+  { id: '1', name: 'Alice Johnson', lastMessage: 'Hey there!' },
+  { id: '2', name: 'Bob Smith', lastMessage: 'See you tomorrow' },
+  { id: '3', name: 'Carol Davis', lastMessage: 'Thanks for the help' }
+]
