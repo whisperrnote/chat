@@ -48,7 +48,7 @@ export default function RegisterClient() {
           className="text-center mb-8"
         >
           <Image
-            src="/images/logo.png"
+            src="/images/logo.webp"
             alt="WhisperrChat"
             width={80}
             height={80}

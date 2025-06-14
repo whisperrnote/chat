@@ -20,7 +20,7 @@ export default function HomeClient() {
           className="mb-8"
         >
           <Image
-            src="/images/logo.png"
+            src="/images/logo.webp"
             alt="WhisperrChat Logo"
             width={120}
             height={120}
