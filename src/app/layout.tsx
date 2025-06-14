@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import { CivicAuthProvider } from "@civic/auth/nextjs"
 
 export const metadata: Metadata = {
   title: 'WhisperrChat - Chat in whispers, secured by the blockchain',
@@ -14,7 +15,9 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className="antialiased">
-        {children}
+        <CivicAuthProvider>
+          {children}
+        </CivicAuthProvider>
       </body>
     </html>
   )
