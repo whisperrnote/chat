@@ -5,13 +5,13 @@ import AppShell from '@/components/layout/AppShell'
 import { motion } from 'framer-motion'
 import { Navbar } from '@/components/layout/Navbar'
 import { useXMTP } from '@/lib/hooks/useXMTP'
+import XMTPChatWindow from '@/components/xmtp/XMTPChatWindow'
 
 export default function DashboardClient() {
-  const [activeView, setActiveView] = useState('chats')
-  const [selectedChat, setSelectedChat] = useState<any>(null)
+  const [selectedChatId, setSelectedChatId] = useState<string | null>(null)
   const [isXMTPEnabled, setIsXMTPEnabled] = useState(false)
   
-  const { client, conversations, initializeClient, sendMessage, createConversation, isLoading, error } = useXMTP()
+  const { client, initializeClient, isLoading, error } = useXMTP()
 
   const handleEnableXMTP = async () => {
     try {
@@ -29,10 +29,8 @@ export default function DashboardClient() {
     }
   }
 
-  const handleSendXMTPMessage = async (message: string) => {
-    if (selectedChat && isXMTPEnabled) {
-      await sendMessage(selectedChat.id, message)
-    }
+  const handleChatSelect = (chatId: string) => {
+    setSelectedChatId(chatId)
   }
 
   return (
@@ -40,90 +38,92 @@ export default function DashboardClient() {
       <Navbar />
       <div className="flex-1 overflow-hidden">
         <AppShell>
-          {selectedChat ? (
-            <div className="h-full flex flex-col">
-              {/* Chat Header */}
-              <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 p-4">
-                <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center">
-                    👤
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-gray-900 dark:text-white">Sarah Wilson</h3>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">Online • 🔐 Encrypted</p>
-                  </div>
+          <div className="h-full flex">
+            {/* Sidebar with XMTP integration */}
+            <div className="w-80 lg:w-96 flex-shrink-0 border-r border-gray-200 dark:border-gray-700">
+              {/* Mock Sidebar Component - replace with actual Sidebar */}
+              <div className="h-full bg-white dark:bg-gray-800 flex flex-col">
+                <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+                  <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+                    WhisperrChat
+                  </h2>
+                  {!isXMTPEnabled && (
+                    <button
+                      onClick={handleEnableXMTP}
+                      disabled={isLoading}
+                      className="mt-2 w-full px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50"
+                    >
+                      {isLoading ? 'Connecting...' : 'Enable XMTP 🔐'}
+                    </button>
+                  )}
+                  {error && (
+                    <p className="mt-2 text-sm text-red-500">{error}</p>
+                  )}
                 </div>
-              </div>
 
-              {/* Messages Area */}
-              <div className="flex-1 p-4 overflow-y-auto bg-gray-50 dark:bg-gray-900">
-                <div className="space-y-4">
-                  {/* Mock messages */}
-                  <motion.div
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    className="flex"
-                  >
-                    <div className="bg-white dark:bg-gray-700 rounded-2xl rounded-bl-md px-4 py-3 max-w-xs shadow-sm">
-                      <p className="text-gray-900 dark:text-white">Hey! How secure is this app? 🤔</p>
-                      <p className="text-xs text-gray-500 mt-1">2:30 PM ✓✓</p>
+                {isXMTPEnabled && client && (
+                  <div className="flex-1 overflow-y-auto">
+                    {/* Chat list would go here */}
+                    <div className="p-4 text-center text-gray-500">
+                      <p>XMTP Connected! 🎉</p>
+                      <p className="text-sm mt-1">Chat functionality ready</p>
                     </div>
-                  </motion.div>
-
-                  <motion.div
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.2 }}
-                    className="flex justify-end"
-                  >
-                    <div className="bg-primary rounded-2xl rounded-br-md px-4 py-3 max-w-xs shadow-sm">
-                      <p className="text-white">Military-grade encryption + blockchain security! 🛡️</p>
-                      <p className="text-xs text-white/70 mt-1">2:31 PM ✓✓</p>
-                    </div>
-                  </motion.div>
-                </div>
-              </div>
-
-              {/* Message Input */}
-              <div className="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 p-4">
-                <div className="flex items-center space-x-3">
-                  <input
-                    type="text"
-                    placeholder="Type a message... 💬"
-                    className="flex-1 px-4 py-3 bg-gray-100 dark:bg-gray-700 rounded-full focus:ring-2 focus:ring-primary focus:outline-none"
-                  />
-                  <button className="p-3 bg-primary text-white rounded-full hover:bg-primary/90 transition-colors">
-                    📤
-                  </button>
-                </div>
+                  </div>
+                )}
               </div>
             </div>
-          ) : (
-            <div className="h-full flex items-center justify-center bg-gray-50 dark:bg-gray-900">
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="text-center"
-              >
-                <div className="text-6xl mb-4">💬</div>
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-                  Welcome to WhisperrChat
-                </h2>
-                <p className="text-gray-600 dark:text-gray-400 mb-6 max-w-md">
-                  Select a chat from the sidebar to start your secure conversation, or create a new one.
-                </p>
-                <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                  <button className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors">
-                    ✨ Start New Chat
-                  </button>
-                  <button className="px-6 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
-                    👥 Add Contacts
-                  </button>
+
+            {/* Main content area */}
+            <div className="flex-1">
+              {selectedChatId && isXMTPEnabled ? (
+                <XMTPChatWindow conversationId={selectedChatId} />
+              ) : (
+                <div className="h-full flex items-center justify-center bg-gray-50 dark:bg-gray-900">
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="text-center"
+                  >
+                    <div className="text-6xl mb-4">💬</div>
+                    <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                      Welcome to WhisperrChat
+                    </h2>
+                    <p className="text-gray-600 dark:text-gray-400 mb-6 max-w-md">
+                      {!isXMTPEnabled 
+                        ? 'Enable XMTP to start your secure conversations'
+                        : 'Select a chat from the sidebar to start your secure conversation, or create a new one.'
+                      }
+                    </p>
+                    <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                      {!isXMTPEnabled ? (
+                        <button 
+                          onClick={handleEnableXMTP}
+                          disabled={isLoading}
+                          className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50"
+                        >
+                          {isLoading ? 'Connecting...' : '🔐 Enable XMTP'}
+                        </button>
+                      ) : (
+                        <>
+                          <button className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors">
+                            ✨ Start New Chat
+                          </button>
+                          <button className="px-6 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                            👥 Add Contacts
+                          </button>
+                        </>
+                      )}
+                    </div>
+                  </motion.div>
                 </div>
-              </motion.div>
+              )}
             </div>
-          )}
+          </div>
         </AppShell>
+      </div>
+    </div>
+  )
+}
       </div>
     </div>
   )

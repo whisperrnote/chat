@@ -7,16 +7,28 @@ import { HiSearch, HiDotsVertical, HiChatAlt2, HiUsers, HiCog } from 'react-icon
 import Avatar from '../ui/Avatar'
 import Button from '../ui/Button'
 import ChatList from '../chat/ChatList'
+import XMTPChatList from '../xmtp/XMTPChatList'
+import { useXMTP } from '@/lib/hooks/useXMTP'
 import clsx from 'clsx'
 
 interface SidebarProps {
   isCollapsed: boolean
   onToggleCollapse: () => void
+  onChatSelect?: (chatId: string) => void
+  selectedChatId?: string
+  xmtpEnabled?: boolean
 }
 
-export default function Sidebar({ isCollapsed, onToggleCollapse }: SidebarProps) {
+export default function Sidebar({ 
+  isCollapsed, 
+  onToggleCollapse, 
+  onChatSelect, 
+  selectedChatId,
+  xmtpEnabled = false 
+}: SidebarProps) {
   const [searchQuery, setSearchQuery] = useState('')
-  const [activeTab, setActiveTab] = useState<'chats' | 'contacts'>('chats')
+  const [activeTab, setActiveTab] = useState<'chats' | 'contacts' | 'xmtp'>('chats')
+  const { client, isLoading } = useXMTP()
 
   if (isCollapsed) {
     return (
@@ -26,10 +38,33 @@ export default function Sidebar({ isCollapsed, onToggleCollapse }: SidebarProps)
         </button>
         
         <div className="flex flex-col space-y-2">
-          <button className="p-3 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+          <button 
+            onClick={() => setActiveTab('chats')}
+            className={clsx(
+              "p-3 rounded-lg transition-colors",
+              activeTab === 'chats' ? "bg-primary/20 text-primary" : "hover:bg-gray-100 dark:hover:bg-gray-700"
+            )}
+          >
             <HiChatAlt2 size={20} />
           </button>
-          <button className="p-3 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+          {xmtpEnabled && (
+            <button 
+              onClick={() => setActiveTab('xmtp')}
+              className={clsx(
+                "p-3 rounded-lg transition-colors",
+                activeTab === 'xmtp' ? "bg-primary/20 text-primary" : "hover:bg-gray-100 dark:hover:bg-gray-700"
+              )}
+            >
+              ⛓️
+            </button>
+          )}
+          <button 
+            onClick={() => setActiveTab('contacts')}
+            className={clsx(
+              "p-3 rounded-lg transition-colors",
+              activeTab === 'contacts' ? "bg-primary/20 text-primary" : "hover:bg-gray-100 dark:hover:bg-gray-700"
+            )}
+          >
             <HiUsers size={20} />
           </button>
           <button className="p-3 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
@@ -62,7 +97,9 @@ export default function Sidebar({ isCollapsed, onToggleCollapse }: SidebarProps)
           <Avatar src="/api/placeholder/40/40" alt="You" isOnline emoji="👤" />
           <div className="flex-1 min-w-0">
             <p className="font-semibold text-gray-900 dark:text-white truncate">Your Name</p>
-            <p className="text-sm text-gray-500 dark:text-gray-400">Online 🔐</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400">
+              {xmtpEnabled && client ? '🔐 XMTP Connected' : 'Online'}
+            </p>
           </div>
         </div>
 
@@ -93,6 +130,19 @@ export default function Sidebar({ isCollapsed, onToggleCollapse }: SidebarProps)
           >
             💬 Chats
           </button>
+          {xmtpEnabled && (
+            <button
+              onClick={() => setActiveTab('xmtp')}
+              className={clsx(
+                'flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-all duration-200',
+                activeTab === 'xmtp'
+                  ? 'bg-primary text-white'
+                  : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'
+              )}
+            >
+              ⛓️ XMTP
+            </button>
+          )}
           <button
             onClick={() => setActiveTab('contacts')}
             className={clsx(
@@ -109,9 +159,26 @@ export default function Sidebar({ isCollapsed, onToggleCollapse }: SidebarProps)
 
       {/* Content */}
       <div className="flex-1 overflow-y-auto">
-        {activeTab === 'chats' ? (
+        {activeTab === 'chats' && (
           <ChatList searchQuery={searchQuery} />
-        ) : (
+        )}
+        {activeTab === 'xmtp' && xmtpEnabled && (
+          <>
+            {isLoading ? (
+              <div className="p-4 text-center">
+                <div className="animate-spin w-8 h-8 border-2 border-primary border-t-transparent rounded-full mx-auto mb-2"></div>
+                <p className="text-sm text-gray-500">Loading XMTP...</p>
+              </div>
+            ) : (
+              <XMTPChatList 
+                searchQuery={searchQuery} 
+                onChatSelect={onChatSelect || (() => {})}
+                selectedChatId={selectedChatId}
+              />
+            )}
+          </>
+        )}
+        {activeTab === 'contacts' && (
           <div className="p-4 text-center text-gray-500 dark:text-gray-400">
             <HiUsers size={48} className="mx-auto mb-4 opacity-50" />
             <p>Contacts coming soon...</p>
