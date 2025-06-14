@@ -341,45 +341,4 @@ export default function PageClient() {
     </div>
   )
 }
-          
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Link
-              href="/app"
-              className="px-8 py-4 bg-primary text-white font-semibold rounded-2xl hover:bg-primary/90 transition-all duration-300 hover:scale-105 shadow-lg"
-            >
-              Try WhisperrChat Now 🚀
-            </Link>
-            <Link
-              href="/auth/register"
-              className="px-8 py-4 bg-white/10 backdrop-blur-md border border-white/20 text-gray-700 dark:text-gray-300 font-semibold rounded-2xl hover:bg-white/20 transition-all duration-300"
-            >
-              Create Account
-            </Link>
-          </div>
-        </motion.div>
-      </section>
-
-      {/* Footer */}
-      <footer className="relative z-10 max-w-7xl mx-auto px-6 py-12 border-t border-white/10">
-        <div className="flex flex-col md:flex-row justify-between items-center">
-          <div className="flex items-center space-x-3 mb-4 md:mb-0">
-            <Image
-              src="/images/logo.png"
-              alt="WhisperrChat"
-              width={32}
-              height={32}
-              className="rounded-lg"
-            />
-            <span className="text-lg font-semibold text-gray-900 dark:text-white">
-              WhisperrChat
-            </span>
-          </div>
-          
-          <p className="text-gray-600 dark:text-gray-400 text-center">
-            © 2024 WhisperrChat. Chat in whispers, secured by the blockchain.
-          </p>
-        </div>
-      </footer>
-    </div>
-  )
-}
+        
