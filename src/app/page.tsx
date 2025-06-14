@@ -3,7 +3,7 @@ import PageClient from './pageClient'
 
 export default function HomePage() {
   // TODO: Check if user is authenticated (implement with Appwrite auth)
-  const isAuthenticated = false // Replace with actual auth check
+  const isAuthenticated = true // Replace with actual auth check
   
   if (isAuthenticated) {
     redirect('/dashboard')
