@@ -1,36 +1,37 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# WhisperrChat
+
+Chat in whispers, secured by the blockchain.
+
+## Overview
+
+WhisperrChat is a decentralized, end-to-end encrypted chat application built on blockchain technology. Enjoy private, censorship-resistant conversations with no central servers and full data ownership.
+
+## Features
+
+- End-to-end encryption for all messages
+- Decentralized architecture—no single point of failure
+- Blockchain-backed message integrity and privacy
+- User-friendly interface
 
 ## Getting Started
 
-First, run the development server:
+1. Clone the repository:
+   ```
+   git clone https://github.com/yourusername/whisperrchat.git
+   ```
+2. Install dependencies:
+   ```
+   npm install
+   ```
+3. Start the application:
+   ```
+   npm start
+   ```
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Security
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+All messages are encrypted on your device and only decrypted by the intended recipient. The blockchain ensures message authenticity and tamper-resistance.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## License
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT License
