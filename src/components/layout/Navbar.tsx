@@ -1,25 +1,12 @@
 'use client'
 
-import { useCallback } from 'react'
-import { useSignIn, useUser } from '@civic/auth-web3/react'
+import { useUser } from '@civic/auth-web3/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 
 export function Navbar() {
-  const { signIn } = useSignIn()
   const { user } = useUser()
-
-  const doSignIn = useCallback(() => {
-    console.log("Starting sign-in process")
-    signIn()
-      .then(() => {
-        console.log("Sign-in completed successfully")
-      })
-      .catch((error) => {
-        console.error("Sign-in failed:", error)
-      })
-  }, [signIn])
 
   return (
     <motion.nav 
@@ -49,7 +36,6 @@ export function Navbar() {
             Open App 📱
           </Link>
           <button
-            onClick={doSignIn}
             className="px-6 py-2 bg-primary/10 backdrop-blur-md border border-primary/20 text-primary font-semibold rounded-full hover:bg-primary/20 transition-all duration-300"
           >
             Civic Login 🔐
