@@ -1,13 +1,15 @@
 import { redirect } from 'next/navigation'
-import PageClient from './pageClient'
+import HomeClient from '../homeClient'
 
 export default function HomePage() {
-  // TODO: Check if user is authenticated (implement with Appwrite auth)
+  // Check if user is authenticated (you'll implement this logic)
   const isAuthenticated = false // Replace with actual auth check
   
   if (isAuthenticated) {
     redirect('/dashboard')
+  } else {
+    redirect('/auth/login')
   }
 
-  return <PageClient />
+  return <HomeClient />
 }
