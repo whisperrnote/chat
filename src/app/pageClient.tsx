@@ -94,6 +94,12 @@ export default function PageClient() {
           
           <div className="flex items-center space-x-4">
             <Link
+              href="/dashboard"
+              className="px-4 py-2 text-gray-700 dark:text-gray-300 hover:text-primary transition-colors"
+            >
+              Open App 📱
+            </Link>
+            <Link
               href="/auth/login"
               className="px-4 py-2 text-gray-700 dark:text-gray-300 hover:text-primary transition-colors"
             >
@@ -156,16 +162,19 @@ export default function PageClient() {
             className="flex flex-col sm:flex-row gap-4 justify-center items-center"
           >
             <Link
-              href="/auth/register"
+              href="/dashboard"
               className="group relative px-8 py-4 bg-primary text-white font-semibold rounded-2xl hover:bg-primary/90 transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl"
             >
-              <span className="relative z-10">Start Chatting Securely ✨</span>
+              <span className="relative z-10">Start Chatting Now ✨</span>
               <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-primary to-secondary opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </Link>
             
-            <button className="px-8 py-4 bg-white/10 backdrop-blur-md border border-white/20 text-gray-700 dark:text-gray-300 font-semibold rounded-2xl hover:bg-white/20 transition-all duration-300">
-              Watch Demo 📺
-            </button>
+            <Link
+              href="/auth/register"
+              className="px-8 py-4 bg-white/10 backdrop-blur-md border border-white/20 text-gray-700 dark:text-gray-300 font-semibold rounded-2xl hover:bg-white/20 transition-all duration-300"
+            >
+              Create Account 📝
+            </Link>
           </motion.div>
         </div>
       </section>
@@ -335,16 +344,16 @@ export default function PageClient() {
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Link
-              href="/auth/register"
+              href="/dashboard"
               className="px-8 py-4 bg-primary text-white font-semibold rounded-2xl hover:bg-primary/90 transition-all duration-300 hover:scale-105 shadow-lg"
             >
-              Start Your Secure Journey 🚀
+              Try WhisperrChat Now 🚀
             </Link>
             <Link
-              href="/auth/login"
+              href="/auth/register"
               className="px-8 py-4 bg-white/10 backdrop-blur-md border border-white/20 text-gray-700 dark:text-gray-300 font-semibold rounded-2xl hover:bg-white/20 transition-all duration-300"
             >
-              I Already Have an Account
+              Create Account
             </Link>
           </div>
         </motion.div>
