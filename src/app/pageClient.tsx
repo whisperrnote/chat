@@ -94,7 +94,7 @@ export default function PageClient() {
           
           <div className="flex items-center space-x-4">
             <Link
-              href="/dashboard"
+              href="/app"
               className="px-4 py-2 text-gray-700 dark:text-gray-300 hover:text-primary transition-colors"
             >
               Open App 📱
@@ -162,7 +162,7 @@ export default function PageClient() {
             className="flex flex-col sm:flex-row gap-4 justify-center items-center"
           >
             <Link
-              href="/dashboard"
+              href="/app"
               className="group relative px-8 py-4 bg-primary text-white font-semibold rounded-2xl hover:bg-primary/90 transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl"
             >
               <span className="relative z-10">Start Chatting Now ✨</span>
@@ -344,7 +344,7 @@ export default function PageClient() {
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Link
-              href="/dashboard"
+              href="/app"
               className="px-8 py-4 bg-primary text-white font-semibold rounded-2xl hover:bg-primary/90 transition-all duration-300 hover:scale-105 shadow-lg"
             >
               Try WhisperrChat Now 🚀
