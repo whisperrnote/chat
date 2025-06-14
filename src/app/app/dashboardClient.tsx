@@ -124,10 +124,10 @@ export default function DashboardClient() {
     </div>
   )
 }
-      </div>
-    </div>
-  )
-}
+//       </div>
+//     </div>
+//   )
+// }
 
 // Mock data for non-XMTP mode
 const mockChats = [
