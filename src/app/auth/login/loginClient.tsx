@@ -47,10 +47,10 @@ export default function LoginClient() {
               className="mx-auto mb-4"
             />
             <h1 className="text-2xl font-bold text-text-primary mb-2">
-              Welcome back! 👋
+              Sign In / Sign Up
             </h1>
             <p className="text-text-secondary">
-              Sign in to continue your conversations
+              Sign in or create an account to continue your conversations
             </p>
           </motion.div>
 
@@ -138,15 +138,11 @@ export default function LoginClient() {
             transition={{ delay: 0.3 }}
             className="mt-6 text-center"
           >
-            <p className="text-text-secondary">
-              Don't have an account?{' '}
-              <Link href="/auth/register" className="text-primary hover:underline font-semibold">
-                Sign up
-              </Link>
-            </p>
+            {/* No register link here */}
           </motion.div>
         </motion.div>
       </div>
     </div>
   )
 }
+

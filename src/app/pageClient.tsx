@@ -128,7 +128,7 @@ export default function PageClient() {
             </Link>
             
             <Link
-              href="/auth/register"
+              href="/auth/login"
               className="px-8 py-4 bg-white/10 backdrop-blur-md border border-white/20 text-gray-700 dark:text-gray-300 font-semibold rounded-2xl hover:bg-white/20 transition-all duration-300"
             >
               Create Account 📝
@@ -308,7 +308,7 @@ export default function PageClient() {
               Try WhisperrChat Now 🚀
             </Link>
             <Link
-              href="/auth/register"
+              href="/auth/login"
               className="px-8 py-4 bg-white/10 backdrop-blur-md border border-white/20 text-gray-700 dark:text-gray-300 font-semibold rounded-2xl hover:bg-white/20 transition-all duration-300"
             >
               Create Account
@@ -342,3 +342,9 @@ export default function PageClient() {
   )
 }
         
+
+
+
+
+
+

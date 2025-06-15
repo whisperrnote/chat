@@ -211,9 +211,20 @@ export default function RegisterClient() {
                 Sign in
               </Link>
             </p>
+            
           </motion.div>
         </motion.div>
       </div>
     </div>
   )
 }
+
+
+
+
+
+
+
+
+
+
