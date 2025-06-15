@@ -1,17 +1,28 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import AppShell from '@/components/layout/AppShell'
 import { motion } from 'framer-motion'
 import { Navbar } from '@/components/layout/Navbar'
 import { useXMTP } from '@/lib/hooks/useXMTP'
 import XMTPChatWindow from '@/components/xmtp/XMTPChatWindow'
+import { useUser } from '@civic/auth-web3/react'
+import { useRouter } from 'next/navigation'
 
 export default function DashboardClient() {
   const [selectedChatId, setSelectedChatId] = useState<string | null>(null)
   const [isXMTPEnabled, setIsXMTPEnabled] = useState(false)
+  const { user } = useUser()
+  const router = useRouter()
   
   const { client, initializeClient, isLoading, error } = useXMTP()
+
+  // Redirect to login if not authenticated
+  useEffect(() => {
+    if (!user) {
+      router.push('/auth/login')
+    }
+  }, [user, router])
 
   const handleEnableXMTP = async () => {
     try {
@@ -29,8 +40,20 @@ export default function DashboardClient() {
     }
   }
 
-  const handleChatSelect = (chatId: string) => {
-    setSelectedChatId(chatId)
+  // Show loading while checking auth
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-primary/10 to-secondary/5 flex flex-col">
+        <Navbar />
+        <div className="flex-1 flex items-center justify-center">
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+            className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full"
+          />
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -41,11 +64,10 @@ export default function DashboardClient() {
           <div className="h-full flex">
             {/* Sidebar with XMTP integration */}
             <div className="w-80 lg:w-96 flex-shrink-0 border-r border-gray-200 dark:border-gray-700">
-              {/* Mock Sidebar Component - replace with actual Sidebar */}
               <div className="h-full bg-white dark:bg-gray-800 flex flex-col">
                 <div className="p-4 border-b border-gray-200 dark:border-gray-700">
                   <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-                    WhisperrChat
+                    Welcome {user.name || 'User'}! 👋
                   </h2>
                   {!isXMTPEnabled && (
                     <button
@@ -63,7 +85,6 @@ export default function DashboardClient() {
 
                 {isXMTPEnabled && client && (
                   <div className="flex-1 overflow-y-auto">
-                    {/* Chat list would go here */}
                     <div className="p-4 text-center text-gray-500">
                       <p>XMTP Connected! 🎉</p>
                       <p className="text-sm mt-1">Chat functionality ready</p>
@@ -124,14 +145,3 @@ export default function DashboardClient() {
     </div>
   )
 }
-//       </div>
-//     </div>
-//   )
-// }
-
-// Mock data for non-XMTP mode
-const mockChats = [
-  { id: '1', name: 'Alice Johnson', lastMessage: 'Hey there!' },
-  { id: '2', name: 'Bob Smith', lastMessage: 'See you tomorrow' },
-  { id: '3', name: 'Carol Davis', lastMessage: 'Thanks for the help' }
-]

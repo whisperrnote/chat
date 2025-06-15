@@ -1,6 +1,6 @@
 'use client'
 
-import { useUser } from '@civic/auth-web3/react'
+import { useUser, UserButton } from '@civic/auth-web3/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
@@ -35,15 +35,21 @@ export function Navbar() {
           >
             Open App 📱
           </Link>
-          <button
-            className="px-6 py-2 bg-primary/10 backdrop-blur-md border border-primary/20 text-primary font-semibold rounded-full hover:bg-primary/20 transition-all duration-300"
-          >
-            Civic Login 🔐
-          </button>
-          {user && (
-            <span className="ml-4 text-gray-700 dark:text-gray-200 font-medium">
-              Hello {user.name || user.email || user.id}!
-            </span>
+          
+          {user ? (
+            <div className="flex items-center space-x-3">
+              <span className="text-gray-700 dark:text-gray-200 font-medium">
+                Hello {user.name || user.email || 'User'}! 👋
+              </span>
+              <UserButton />
+            </div>
+          ) : (
+            <Link
+              href="/auth/login"
+              className="px-6 py-2 bg-primary/10 backdrop-blur-md border border-primary/20 text-primary font-semibold rounded-full hover:bg-primary/20 transition-all duration-300"
+            >
+              Sign In 🔐
+            </Link>
           )}
         </div>
       </div>
