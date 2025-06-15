@@ -1,40 +1,37 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
-import Link from 'next/link'
-import { HiEye, HiEyeOff } from 'react-icons/hi'
-import { UserButton, useUser } from '@civic/auth-web3/react'
+import { UserButton, useUser, signIn } from '@civic/auth-web3/react'
 import { Navbar } from '@/components/layout/Navbar'
 import { useRouter } from 'next/navigation'
 
 export default function LoginClient() {
-  // Civic auth
-  const { user } = useUser()
+  const { user, isLoading: userLoading } = useUser()
   const router = useRouter()
-
-  // Form state (if using custom form instead of Civic)
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [showPassword, setShowPassword] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState('')
+  const [isSigningIn, setIsSigningIn] = useState(false)
 
   // Redirect logic
   useEffect(() => {
-    if (user) {
+    if (user && !userLoading) {
       router.push('/app')
     }
-  }, [user, router])
+  }, [user, userLoading, router])
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    // Add your login logic here
-  }
+  const handleSignIn = useCallback(async () => {
+    try {
+      setIsSigningIn(true)
+      await signIn()
+      // Redirect will be handled by the useEffect above
+    } catch (error) {
+      console.error("Sign-in failed:", error)
+      setIsSigningIn(false)
+    }
+  }, [])
 
   // Loading state
-  if (user) {
+  if (userLoading || (user && !userLoading)) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-primary/10 to-secondary/5 flex flex-col">
         <Navbar />
@@ -44,6 +41,7 @@ export default function LoginClient() {
             transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
             className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full"
           />
+          <span className="ml-3 text-text-secondary">Redirecting...</span>
         </div>
       </div>
     )
@@ -75,37 +73,49 @@ export default function LoginClient() {
               className="mx-auto mb-4"
             />
             <h1 className="text-2xl font-bold text-text-primary mb-2">
-              Sign In / Sign Up
+              Welcome Back! 👋
             </h1>
             <p className="text-text-secondary">
-              Sign in or create an account to continue your conversations
+              Sign in to continue your conversations
             </p>
           </motion.div>
 
-          {/* CHOOSE ONE: Either Civic UserButton OR Custom Form */}
-          
-          {/* Option 1: Civic Auth */}
+          {/* Civic Auth Sign In */}
           <motion.div
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2 }}
-            className="flex justify-center"
+            className="space-y-4"
           >
-            <UserButton className="w-full bg-primary hover:bg-primary/90 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200" />
+            {!user && (
+              <button
+                onClick={handleSignIn}
+                disabled={isSigningIn}
+                className="w-full bg-primary hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 flex items-center justify-center"
+              >
+                {isSigningIn ? (
+                  <>
+                    <motion.div
+                      animate={{ rotate: 360 }}
+                      transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                      className="w-4 h-4 border-2 border-white border-t-transparent rounded-full mr-2"
+                    />
+                    Signing in...
+                  </>
+                ) : (
+                  <>
+                    🔐 Sign In with Civic
+                  </>
+                )}
+              </button>
+            )}
+            
+            {user && (
+              <div className="text-center">
+                <UserButton />
+              </div>
+            )}
           </motion.div>
-
-          {/* Option 2: Custom Form (remove the UserButton above if using this) */}
-          {/* 
-          <motion.form
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            onSubmit={handleSubmit}
-            className="space-y-6"
-          >
-            // ... your form fields here
-          </motion.form>
-          */}
 
           {/* Footer */}
           <motion.div
