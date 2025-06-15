@@ -6,20 +6,42 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { HiEye, HiEyeOff } from 'react-icons/hi'
 import { Navbar } from '@/components/layout/Navbar'
+import { account } from '@/lib/appwrite'
 
 export default function LoginClient() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
-    
-    // Implement login logic here
-    
-    setTimeout(() => setIsLoading(false), 2000) // Mock loading
+    setError(null)
+
+    try {
+      // Try to create a session (login)
+      await account.createEmailPasswordSession(email, password)
+      // Optionally: redirect or reload page here
+    } catch (loginErr: any) {
+      // If login fails due to user not found, try to register
+      if (loginErr?.type === 'user_not_found' || loginErr?.code === 404) {
+        try {
+          // Register user
+          await account.create('unique()', email, password)
+          // After registration, log in
+          await account.createEmailPasswordSession(email, password)
+          // Optionally: redirect or reload page here
+        } catch (registerErr: any) {
+          setError(registerErr?.message || 'Registration failed')
+        }
+      } else {
+        setError(loginErr?.message || 'Login failed')
+      }
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -109,6 +131,16 @@ export default function LoginClient() {
                 Forgot password?
               </Link>
             </div>
+
+            {error && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="p-3 bg-red-100 border border-red-300 text-red-700 rounded-lg"
+              >
+                {error}
+              </motion.div>
+            )}
 
             <motion.button
               type="submit"
