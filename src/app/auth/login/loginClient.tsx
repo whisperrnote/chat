@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
-import { UserButton, useUser, signIn } from '@civic/auth-web3/react'
+import { UserButton, useUser } from '@civic/auth-web3/react'
 import { Navbar } from '@/components/layout/Navbar'
 import { useRouter } from 'next/navigation'
 
@@ -19,15 +19,11 @@ export default function LoginClient() {
     }
   }, [user, userLoading, router])
 
-  const handleSignIn = useCallback(async () => {
-    try {
-      setIsSigningIn(true)
-      await signIn()
-      // Redirect will be handled by the useEffect above
-    } catch (error) {
-      console.error("Sign-in failed:", error)
-      setIsSigningIn(false)
-    }
+  const handleSignIn = useCallback(() => {
+    console.log("Starting sign-in process");
+    setIsSigningIn(true)
+    // The UserButton component will handle the actual sign-in
+    // Just trigger the UI state
   }, [])
 
   // Loading state
@@ -88,26 +84,9 @@ export default function LoginClient() {
             className="space-y-4"
           >
             {!user && (
-              <button
-                onClick={handleSignIn}
-                disabled={isSigningIn}
-                className="w-full bg-primary hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 flex items-center justify-center"
-              >
-                {isSigningIn ? (
-                  <>
-                    <motion.div
-                      animate={{ rotate: 360 }}
-                      transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                      className="w-4 h-4 border-2 border-white border-t-transparent rounded-full mr-2"
-                    />
-                    Signing in...
-                  </>
-                ) : (
-                  <>
-                    🔐 Sign In with Civic
-                  </>
-                )}
-              </button>
+              <div className="text-center">
+                <UserButton />
+              </div>
             )}
             
             {user && (
